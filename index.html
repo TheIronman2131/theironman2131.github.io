@@ -196,6 +196,13 @@
       anthropic: 30000 / 86400
     };
 
+    const ouncesPerGallon = 128;
+    const cokeBottleOunces = 16.9; // Typical 500ml Coke bottle
+
+    function gallonsToCokeBottles(gallons) {
+      return (gallons * ouncesPerGallon) / cokeBottleOunces;
+    }
+
     function numberWithCommas(x) {
       let parts = x.toString().split(".");
       parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -205,24 +212,48 @@
     function updateMainCounter() {
       const now = new Date();
       const elapsed = Math.floor((now - launchDate) / 1000);
-      const gallons = numberWithCommas((elapsed * waterPerSecondGlobal).toFixed(6));
-      document.getElementById("mainCounter").textContent = `${gallons} gallons`;
+      const totalGallons = (elapsed * waterPerSecondGlobal);
+      const gallons = numberWithCommas(totalGallons.toFixed(6));
+      const bottlesPerDay = gallonsToCokeBottles(waterPerSecondGlobal * 86400);
+      const mainEl = document.getElementById("mainCounter");
+      mainEl.textContent = `${gallons} gallons`;
+      mainEl.title = `Equivalent to ${numberWithCommas(bottlesPerDay.toFixed(0))} Coke bottles/day`;
     }
 
     function loadPageCounter() {
-      document.getElementById("pageCounter").textContent = `${waterPerPageLoad.toFixed(8)} gallons`;
+      const bottlesPerLoad = gallonsToCokeBottles(waterPerPageLoad);
+      const pageEl = document.getElementById("pageCounter");
+      pageEl.textContent = `${waterPerPageLoad.toFixed(8)} gallons`;
+      pageEl.title = `Equivalent to ${bottlesPerLoad.toFixed(4)} Coke bottles per page load`;
     }
 
     function updateCompanyCounters() {
       const now = new Date();
       const elapsed = Math.floor((now - launchDate) / 1000);
+      const chatgptEl = document.getElementById("chatgptCounter");
+      const alphabetEl = document.getElementById("alphabetCounter");
+      const microsoftEl = document.getElementById("microsoftCounter");
+      const oracleEl = document.getElementById("oracleCounter");
+      const awsEl = document.getElementById("awsCounter");
+      const anthropicEl = document.getElementById("anthropicCounter");
 
-      document.getElementById("chatgptCounter").textContent = `${numberWithCommas((elapsed * rates.chatgpt).toFixed(2))} gallons`;
-      document.getElementById("alphabetCounter").textContent = `${numberWithCommas((elapsed * rates.alphabet).toFixed(2))} gallons`;
-      document.getElementById("microsoftCounter").textContent = `${numberWithCommas((elapsed * rates.microsoft).toFixed(2))} gallons`;
-      document.getElementById("oracleCounter").textContent = `${numberWithCommas((elapsed * rates.oracle).toFixed(2))} gallons`;
-      document.getElementById("awsCounter").textContent = `${numberWithCommas((elapsed * rates.aws).toFixed(2))} gallons`;
-      document.getElementById("anthropicCounter").textContent = `${numberWithCommas((elapsed * rates.anthropic).toFixed(2))} gallons`;
+      chatgptEl.textContent = `${numberWithCommas((elapsed * rates.chatgpt).toFixed(2))} gallons`;
+      chatgptEl.title = `Equivalent to ${numberWithCommas(gallonsToCokeBottles(rates.chatgpt * 86400).toFixed(0))} Coke bottles/day`;
+
+      alphabetEl.textContent = `${numberWithCommas((elapsed * rates.alphabet).toFixed(2))} gallons`;
+      alphabetEl.title = `Equivalent to ${numberWithCommas(gallonsToCokeBottles(rates.alphabet * 86400).toFixed(0))} Coke bottles/day`;
+
+      microsoftEl.textContent = `${numberWithCommas((elapsed * rates.microsoft).toFixed(2))} gallons`;
+      microsoftEl.title = `Equivalent to ${numberWithCommas(gallonsToCokeBottles(rates.microsoft * 86400).toFixed(0))} Coke bottles/day`;
+
+      oracleEl.textContent = `${numberWithCommas((elapsed * rates.oracle).toFixed(2))} gallons`;
+      oracleEl.title = `Equivalent to ${numberWithCommas(gallonsToCokeBottles(rates.oracle * 86400).toFixed(0))} Coke bottles/day`;
+
+      awsEl.textContent = `${numberWithCommas((elapsed * rates.aws).toFixed(2))} gallons`;
+      awsEl.title = `Equivalent to ${numberWithCommas(gallonsToCokeBottles(rates.aws * 86400).toFixed(0))} Coke bottles/day`;
+
+      anthropicEl.textContent = `${numberWithCommas((elapsed * rates.anthropic).toFixed(2))} gallons`;
+      anthropicEl.title = `Equivalent to ${numberWithCommas(gallonsToCokeBottles(rates.anthropic * 86400).toFixed(0))} Coke bottles/day`;
     }
 
     updateMainCounter();
