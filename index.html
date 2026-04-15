@@ -3,235 +3,1186 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Water Usage</title>
+  <title>AI Water Usage — Track the Hidden Cost of AI</title>
   <meta name="keywords" content="AI water usage, ChatGPT environmental impact, Google Cloud sustainability, Microsoft Azure water, Anthropic, OpenAI, sustainable AI">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700&display=swap" rel="stylesheet">
   <meta name="description" content="Track real-time estimates of water consumption by AI infrastructure. Understand the environmental impact of artificial intelligence.">
   <meta name="referrer" content="no-referrer-when-downgrade">
-<meta name="robots" content="index, follow">
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  <meta name="robots" content="index, follow">
+
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer','GTM-WPLHMW6W');</script>
-  <!-- End Google Tag Manager -->
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MMPSQS77J2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-MMPSQS77J2');
-</script>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-MMPSQS77J2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-MMPSQS77J2');
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+
   <style>
-    body {
-      margin: 0;
-      font-family: 'Barlow Condensed', sans-serif;
-      background-color: #f3f4f6;
-      color: #333333;
+    :root {
+      --bg: #050d18;
+      --bg2: #081120;
+      --bg3: #0b1929;
+      --card: #0d1f33;
+      --card-border: #1a3a5c;
+      --blue: #2196f3;
+      --blue-bright: #42b0ff;
+      --blue-dim: #1565c0;
+      --cyan: #00e5ff;
+      --cyan-dim: #00b0cc;
+      --text: #e8f4ff;
+      --text-muted: #7aadcc;
+      --text-dim: #3d6b8a;
+      --accent: #00e5ff;
     }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ───── WATER BACKGROUND ───── */
+    .water-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .water-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 80%, rgba(0,100,200,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 20%, rgba(0,200,255,0.07) 0%, transparent 50%),
+        radial-gradient(ellipse 100% 80% at 50% 110%, rgba(0,80,180,0.18) 0%, transparent 50%);
+      animation: waterShift 20s ease-in-out infinite alternate;
+    }
+    @keyframes waterShift {
+      0%   { opacity: 0.7; transform: scale(1) translateY(0); }
+      100% { opacity: 1;   transform: scale(1.04) translateY(-10px); }
+    }
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(0,200,255,0.08);
+      animation: rippleOut 8s ease-out infinite;
+    }
+    .ripple:nth-child(1) { width: 600px; height: 600px; bottom: -200px; left: -100px; animation-delay: 0s; }
+    .ripple:nth-child(2) { width: 900px; height: 900px; bottom: -350px; left: -200px; animation-delay: 2s; }
+    .ripple:nth-child(3) { width: 1200px; height: 1200px; bottom: -500px; left: -300px; animation-delay: 4s; }
+    @keyframes rippleOut {
+      0%   { opacity: 0.5; transform: scale(0.8); }
+      100% { opacity: 0;   transform: scale(1.1); }
+    }
+
+    /* ───── NAV ───── */
     nav {
       position: sticky;
-      background-color: #1e293b;
-      padding: 1rem 2rem;
+      top: 0;
+      z-index: 100;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 0 2.5rem;
+      height: 64px;
+      background: rgba(5, 13, 24, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0,200,255,0.1);
     }
-    nav a {
-      color: #ffffff;
-      margin: 0 1rem;
+    .nav-logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 1.4rem;
+      letter-spacing: 0.04em;
+      color: var(--text);
       text-decoration: none;
-      font-weight: 700;
-      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
-    nav a:hover {
-      text-decoration: underline;
+    .nav-logo span { color: var(--cyan); }
+    .nav-links { display: flex; gap: 0.25rem; }
+    .nav-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
     }
+    .nav-links a:hover { color: var(--cyan); background: rgba(0,200,255,0.06); }
+
+    /* ───── HERO ───── */
     .hero {
+      position: relative;
+      z-index: 1;
       text-align: center;
-      padding: 4rem 2rem;
-      background: linear-gradient(135deg, #cce3ff, #e0eaff);
-      border-bottom: 4px solid #3b82f6;
+      padding: 7rem 2rem 5rem;
+    }
+    .hero-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+    }
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--cyan);
+      opacity: 0.4;
     }
     .hero h1 {
-      font-size: 3rem;
-      margin: 0;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--cyan);
     }
     .hero p {
-      font-size: 1.25rem;
-      margin-top: 1rem;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--text-muted);
+      max-width: 560px;
+      margin: 0 auto 3rem;
+      line-height: 1.7;
+      font-weight: 300;
     }
-    .counter-section {
-      text-align: center;
-      margin: 3rem auto;
-      padding: 2rem;
-      max-width: 800px;
-      background-color: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 1rem;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+
+    /* ───── HERO MAIN COUNTER ───── */
+    .hero-counter-wrap {
+      display: inline-block;
+      background: rgba(13, 31, 51, 0.7);
+      border: 1px solid rgba(0,200,255,0.2);
+      border-radius: 16px;
+      padding: 2rem 3rem;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 60px rgba(0,150,255,0.1), inset 0 1px 0 rgba(255,255,255,0.04);
+      min-width: 360px;
+      cursor: pointer;
+      user-select: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      position: relative;
     }
-    .counter-section h2 {
+    .hero-counter-wrap:hover {
+      border-color: rgba(0,200,255,0.45);
+      box-shadow: 0 0 80px rgba(0,150,255,0.18), inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+    .hero-counter-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 0.6rem;
+      transition: color 0.3s;
+    }
+    .hero-counter-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      color: var(--cyan);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      text-shadow: 0 0 30px rgba(0,200,255,0.4);
+    }
+    .hero-counter-sub {
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      min-height: 1.2em;
+      transition: color 0.3s;
+    }
+
+    /* flip animation */
+    @keyframes flipOut {
+      0%   { transform: rotateX(0deg);   opacity: 1; }
+      100% { transform: rotateX(-80deg); opacity: 0; }
+    }
+    @keyframes flipIn {
+      0%   { transform: rotateX(80deg);  opacity: 0; }
+      100% { transform: rotateX(0deg);   opacity: 1; }
+    }
+    .flip-out { animation: flipOut 0.18s ease-in forwards; }
+    .flip-in  { animation: flipIn  0.22s ease-out forwards; }
+
+    /* mode dots */
+    .mode-dots {
+      display: flex; gap: 6px; justify-content: center; margin-top: 1rem;
+    }
+    .mode-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--text-dim); transition: background 0.3s, transform 0.3s;
+    }
+    .mode-dot.active { background: var(--cyan); transform: scale(1.4); }
+
+    /* click hint */
+    .click-hint {
+      position: absolute; bottom: -1.8rem; left: 50%; transform: translateX(-50%);
+      font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-dim); white-space: nowrap;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .hero-counter-wrap:hover .click-hint { opacity: 1; }
+
+    /* ───── SECTION WRAPPER ───── */
+    .section {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+    .section-badge {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      background: rgba(0,200,255,0.08);
+      border: 1px solid rgba(0,200,255,0.2);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+    }
+
+    /* ───── PROVIDER GRID ───── */
+    .provider-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+    .provider-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.5rem 1.75rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+      cursor: pointer;
+      user-select: none;
+    }
+    .provider-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--blue), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .provider-card:hover { border-color: rgba(0,200,255,0.3); transform: translateY(-2px); }
+    .provider-card:hover::before { opacity: 1; }
+    .provider-card .click-hint {
+      position: absolute; bottom: 0.6rem; right: 0.9rem;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 0.65rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-dim); opacity: 0; transition: opacity 0.2s;
+    }
+    .provider-card:hover .click-hint { opacity: 1; }
+    .provider-mode-dots {
+      display: flex; gap: 5px; margin-top: 0.75rem;
+    }
+    .provider-mode-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--text-dim); transition: background 0.3s, transform 0.3s;
+    }
+    .provider-mode-dot.active { background: var(--cyan); transform: scale(1.4); }
+
+    .provider-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+    .provider-counter {
+      font-family: 'Barlow Condensed', sans-serif;
       font-size: 2rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .provider-unit {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      margin-top: 0.3rem;
+      font-weight: 400;
+    }
+    .provider-rate {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0.03em;
+    }
+    .provider-rate span { color: var(--blue-bright); }
+
+    /* ───── COMPARISON BAR ───── */
+    .comparison-section { margin-top: 0; }
+    .comparison-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
       margin-bottom: 1rem;
     }
-    .counter {
-      font-size: 2.5rem;
-      color: #3b82f6;
-      font-weight: bold;
+    .comparison-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      width: 160px;
+      flex-shrink: 0;
     }
-    .provider-usage {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    .comparison-bar-wrap {
+      flex: 1;
+      background: rgba(255,255,255,0.04);
+      border-radius: 4px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .comparison-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--blue-dim), var(--cyan));
+      transition: width 1s ease;
+    }
+    .comparison-val {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      width: 120px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* ───── PAGE COUNTER ───── */
+    .page-counter-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 2rem 2.5rem;
+      display: flex;
+      align-items: center;
       gap: 2rem;
-      margin-top: 2rem;
+      flex-wrap: wrap;
     }
-    .provider {
-      background-color: #f9fafb;
-      padding: 1.5rem;
-      border-radius: 1rem;
-      text-align: center;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    .page-counter-icon {
+      font-size: 2.5rem;
+      opacity: 0.7;
     }
-    .provider h3 {
-      font-size: 1.75rem;
-      margin: 0 0 1rem;
+    .page-counter-text h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
     }
-    .provider .big-counter {
-      font-size: 2.25rem;
-      font-weight: bold;
-      color: #3b82f6;
+    .page-counter-text .val {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--cyan);
     }
+
+    /* ───── DISCLAIMER ───── */
+    .disclaimer {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto 4rem;
+      padding: 0 2rem;
+    }
+    .disclaimer-inner {
+      background: rgba(255,180,0,0.04);
+      border: 1px solid rgba(255,180,0,0.15);
+      border-radius: 10px;
+      padding: 1.25rem 1.75rem;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+    .disclaimer-inner strong { color: rgba(255,200,50,0.7); }
+
+    /* ───── DIVIDER ───── */
+    .section-divider {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* ───── FOOTER ───── */
     footer {
+      position: relative;
+      z-index: 1;
+      background: rgba(5, 13, 24, 0.9);
+      border-top: 1px solid rgba(0,200,255,0.08);
+      padding: 3rem 2rem;
       text-align: center;
-      padding: 2rem;
-      background-color: #1e293b;
-      color: #ffffff;
-      margin-top: 3rem;
+    }
+    .footer-logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      letter-spacing: 0.04em;
+    }
+    .footer-logo span { color: var(--cyan); }
+    .footer-links { display: flex; gap: 2rem; justify-content: center; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .footer-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--cyan); }
+    footer p { font-size: 0.8rem; color: var(--text-dim); }
+
+    /* ───── LIVE DOT ───── */
+    .live-dot {
+      display: inline-block;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 6px var(--cyan);
+      animation: pulse 1.5s ease-in-out infinite;
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    /* ───── FADE IN ───── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.6s ease forwards;
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+
+    /* ───── RESPONSIVE ───── */
+    @media (max-width: 640px) {
+      nav { padding: 0 1.25rem; }
+      .nav-links a { padding: 0.4rem 0.5rem; font-size: 0.85rem; }
+      .hero-counter-wrap { min-width: unset; padding: 1.5rem; }
+      .comparison-label { width: 110px; font-size: 0.8rem; }
+      .comparison-val { width: 90px; }
+    }
+
+    /* ───── PROJECTION CARD ───── */
+    .projection-card {
+      background: linear-gradient(135deg, rgba(0,60,130,0.35), rgba(0,20,50,0.6));
+      border: 1px solid rgba(0,200,255,0.25);
+      border-radius: 14px;
+      padding: 2rem 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+      position: relative;
+      overflow: hidden;
+    }
+    .projection-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(0,200,255,0.05), transparent);
+      pointer-events: none;
+    }
+    .projection-left { flex: 1; min-width: 240px; }
+    .projection-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--text-dim); margin-bottom: 0.5rem;
+    }
+    .projection-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700; color: var(--cyan);
+      letter-spacing: -0.02em; line-height: 1;
+      text-shadow: 0 0 30px rgba(0,200,255,0.3);
+    }
+    .projection-unit {
+      margin-top: 0.5rem; font-size: 0.9rem;
+      color: var(--text-muted); font-weight: 300;
+    }
+    .projection-unit em { font-style: normal; color: var(--cyan); font-weight: 600; }
+    .projection-source {
+      margin-top: 0.75rem; font-size: 0.75rem;
+      color: var(--text-dim); font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0.03em;
+    }
+    .projection-right {
+      text-align: center;
+      background: rgba(0,200,255,0.05);
+      border: 1px solid rgba(0,200,255,0.15);
+      border-radius: 10px;
+      padding: 1.25rem 2rem;
+      flex-shrink: 0;
+    }
+    .projection-rate-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-dim); margin-bottom: 0.4rem;
+    }
+    .projection-rate-val {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2rem; font-weight: 800; color: var(--text);
+      letter-spacing: -0.02em; line-height: 1;
+    }
+    .projection-rate-val span { font-size: 1rem; color: var(--cyan); font-weight: 600; }
+    .projection-rate-sub {
+      margin-top: 0.4rem; font-size: 0.75rem;
+      color: var(--text-dim); max-width: 160px;
+    }
+
+    /* ───── UNIT TOGGLE ───── */
+    .unit-toggle-bar {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto 0;
+      padding: 1.5rem 2rem;
+      display: flex; align-items: center; justify-content: flex-end; gap: 1rem;
+    }
+    .unit-toggle-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .unit-toggle-options {
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .unit-opt {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.9rem; font-weight: 700;
+      letter-spacing: 0.05em; color: var(--text-dim);
+      transition: color 0.2s;
+    }
+    .unit-opt.active { color: var(--cyan); }
+    /* toggle switch */
+    .toggle-switch {
+      position: relative; width: 44px; height: 24px; cursor: pointer;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-track {
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--card-border);
+      border-radius: 99px;
+      transition: background 0.25s, border-color 0.25s;
+    }
+    .toggle-switch input:checked ~ .toggle-track {
+      background: rgba(0,200,255,0.15);
+      border-color: rgba(0,200,255,0.4);
+    }
+    .toggle-thumb {
+      position: absolute; top: 3px; left: 3px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--text-dim);
+      transition: transform 0.25s, background 0.25s;
+    }
+    .toggle-switch input:checked ~ .toggle-track .toggle-thumb {
+      transform: translateX(20px);
+      background: var(--cyan);
+    }
+    .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+    .fact-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .fact-card:hover { border-color: rgba(0,200,255,0.2); transform: translateY(-2px); }
+    .fact-icon { font-size: 1.5rem; margin-bottom: 0.6rem; }
+    .fact-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.7rem; font-weight: 800;
+      color: var(--cyan); letter-spacing: -0.01em;
+      margin-bottom: 0.4rem; line-height: 1;
+    }
+    .fact-desc {
+      font-size: 0.85rem; color: var(--text-muted);
+      line-height: 1.55; font-weight: 300;
     }
   </style>
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WPLHMW6W"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
+  <!-- GTM noscript -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WPLHMW6W"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+  <!-- Water BG -->
+  <div class="water-bg" aria-hidden="true">
+    <div class="ripple"></div>
+    <div class="ripple"></div>
+    <div class="ripple"></div>
+  </div>
+
+  <!-- Nav -->
   <nav>
-    <div style="font-size: 1.5rem; font-weight: bold; color: #ffffff;">AIWaterUsage</div>
-    <div>
+    <a href="index.html" class="nav-logo">AI<span>Water</span>Usage</a>
+    <div class="nav-links">
       <a href="sources.html">Sources</a>
       <a href="blog.html">Articles</a>
       <a href="getInvolved.html">Get Involved</a>
     </div>
   </nav>
 
-  <section class="hero">
-    <h1>Tracking the True Cost of Intelligence</h1>
-    <p>This website estimates water consumption from AI infrastructure in real-time.</p>
-  </section>
-
-  <section class="counter-section">
-    <h2>💧 Water Used To Run This Site Since Launch</h2>
-    <div id="mainCounter" class="counter">Loading...</div>
-  </section>
-
-  <section class="counter-section">
-    <h2>📊 Live Estimated Water Usage by Company <br>Since April 10, 2025</h2>
-    <div class="provider-usage">
-      <div class="provider">
-        <h3>OpenAI (via Azure)</h3>
-        <div id="chatgptCounter" class="big-counter">Loading...</div>
+  <!-- Hero -->
+  <section class="hero fade-in">
+    <div class="hero-eyebrow">Real-Time Environmental Tracking</div>
+    <h1>The <em>Hidden Cost</em><br>of Intelligence</h1>
+    <p>Every AI query consumes water to cool the data centers that power it. This site tracks those estimates in real time.</p>
+    <div class="hero-counter-wrap fade-in delay-2" id="heroCounterWrap" onclick="cycleMode()" title="Click to change units">
+      <div class="hero-counter-label" id="counterLabel"><span class="live-dot"></span> Water used to run this site since launch</div>
+      <div class="hero-counter-value" id="mainCounter">—</div>
+      <div class="hero-counter-sub" id="counterSub">estimated gallons consumed by this website</div>
+      <div class="mode-dots">
+        <div class="mode-dot active" id="dot0"></div>
+        <div class="mode-dot" id="dot1"></div>
+        <div class="mode-dot" id="dot2"></div>
+        <div class="mode-dot" id="dot3"></div>
       </div>
-      <div class="provider">
-        <h3>Alphabet (Google LLC)</h3>
-        <div id="alphabetCounter" class="big-counter">Loading...</div>
-      </div>
-      <div class="provider">
-        <h3>Microsoft (Azure)</h3>
-        <div id="microsoftCounter" class="big-counter">Loading...</div>
-      </div>
-      <div class="provider">
-        <h3>Oracle Cloud</h3>
-        <div id="oracleCounter" class="big-counter">Loading...</div>
-      </div>
-      <div class="provider">
-        <h3>AWS (Amazon Web Services)</h3>
-        <div id="awsCounter" class="big-counter">Loading...</div>
-      </div>
-      <div class="provider">
-        <h3>Anthropic (via AWS)</h3>
-        <div id="anthropicCounter" class="big-counter">Loading...</div>
-      </div>
+      <div class="click-hint">click to change units</div>
     </div>
   </section>
-  <section class="counter-section">
-    <h2>📱 Water Used by This Page (Estimated)</h2>
-    <div id="pageCounter" class="counter">Loading...</div>
-  </section>
 
+  <!-- Provider Counters -->
+  <div class="section fade-in delay-3">
+    <div class="section-header">
+      <span class="section-title">Live Usage by Company</span>
+      <span class="section-badge"><span class="live-dot"></span> Live</span>
+    </div>
+    <div class="provider-grid">
+
+      <div class="provider-card" onclick="cycleCard(this)">
+        <div class="provider-name">OpenAI (via Azure)</div>
+        <div class="provider-counter" data-rate="185000/86400">—</div>
+        <div class="provider-unit">gallons since April 10, 2025</div>
+        <div class="provider-rate">Embedded in Microsoft/Azure figures. GPT-3 training alone consumed ≈ <span>185,000 gal</span> of water.</div>
+        <div class="provider-mode-dots">
+          <div class="provider-mode-dot active"></div>
+          <div class="provider-mode-dot"></div>
+          <div class="provider-mode-dot"></div>
+          <div class="provider-mode-dot"></div>
+        </div>
+        <div class="click-hint">tap to change units</div>
+      </div>
+
+      <div class="provider-card" onclick="cycleCard(this)">
+        <div class="provider-name">Alphabet (Google)</div>
+        <!-- 23B liters/yr consumed in 2023 = 6,077,888,888 gal/yr -->
+        <div class="provider-counter" data-rate="6077888888/31536000">—</div>
+        <div class="provider-unit">gallons since April 10, 2025</div>
+        <div class="provider-rate">≈ <span>6.1B gal/year</span> — 23B liters consumed in 2023 (Google Sustainability Report)</div>
+        <div class="provider-mode-dots">
+          <div class="provider-mode-dot active"></div>
+          <div class="provider-mode-dot"></div>
+          <div class="provider-mode-dot"></div>
+          <div class="provider-mode-dot"></div>
+        </div>
+        <div class="click-hint">tap to change units</div>
+      </div>
+
+      <div class="provider-card" onclick="cycleCard(this)">
+        <div class="provider-name">Microsoft (Azure)</div>
+        <!-- 7.8B liters/yr est. 2023 = 2,060,567,296 gal/yr -->
+        <div class="provider-counter" data-rate="2060567296/31536000">—</div>
+        <div class="provider-unit">gallons since April 10, 2025</div>
+        <div class="provider-rate">≈ <span>2.06B gal/year</span> — est. 7.8B liters in 2023, up 34% from 2022 amid AI boom</div>
+        <div class="provider-mode-dots">
+          <div class="provider-mode-dot active"></div>
+          <div class="provider-mode-dot"></div>
+          <div class="provider-mode-dot"></div>
+          <div class="provider-mode-dot"></div>
+        </div>
+        <div class="click-hint">tap to change units</div>
+      </div>
+
+      <div class="provider-card" onclick="cycleCard(this)">
+        <div class="provider-name">Oracle Cloud</div>
+        <div class="provider-counter" data-rate="50000/86400">—</div>
+        <div class="provider-unit">gallons since April 10, 2025</div>
+        <div class="provider-rate">≈ <span>50,000 gal/day</span> — infrastructure estimate</div>
+        <div class="provider-mode-dots">
+          <div class="provider-mode-dot active"></div>
+          <div class="provider-mode-dot"></div>
+          <div class="provider-mode-dot"></div>
+          <div class="provider-mode-dot"></div>
+        </div>
+        <div class="click-hint">tap to change units</div>
+      </div>
+
+      <div class="provider-card" onclick="cycleCard(this)">
+        <div class="provider-name">AWS (Amazon)</div>
+        <!-- AWS committed water positive by 2030; similar scale to Google/MS -->
+        <div class="provider-counter" data-rate="324000/86400">—</div>
+        <div class="provider-unit">gallons since April 10, 2025</div>
+        <div class="provider-rate">≈ <span>324,000 gal/day</span> — est. from 2022 cooling data; AWS pledged water-positive by 2030</div>
+        <div class="provider-mode-dots">
+          <div class="provider-mode-dot active"></div>
+          <div class="provider-mode-dot"></div>
+          <div class="provider-mode-dot"></div>
+          <div class="provider-mode-dot"></div>
+        </div>
+        <div class="click-hint">tap to change units</div>
+      </div>
+
+      <div class="provider-card" onclick="cycleCard(this)">
+        <div class="provider-name">Anthropic (via AWS)</div>
+        <div class="provider-counter" data-rate="30000/86400">—</div>
+        <div class="provider-unit">gallons since April 10, 2025</div>
+        <div class="provider-rate">≈ <span>30,000 gal/day</span> — proportional AWS share estimate</div>
+        <div class="provider-mode-dots">
+          <div class="provider-mode-dot active"></div>
+          <div class="provider-mode-dot"></div>
+          <div class="provider-mode-dot"></div>
+          <div class="provider-mode-dot"></div>
+        </div>
+        <div class="click-hint">tap to change units</div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- 2027 Projection Counter -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">2027 Projection</span>
+      <span class="section-badge">Forecast</span>
+    </div>
+    <div class="projection-card">
+      <div class="projection-left">
+        <div class="projection-label">At current growth rates, AI will consume</div>
+        <div class="projection-value" id="projectionCounter">—</div>
+        <div class="projection-unit" id="projectionUnit">gallons of water <em>this year</em> if 2027 demand arrives early</div>
+        <div class="projection-source">Source: Li et al., 2023 — projected 4.2–6.6 trillion liters/year globally by 2027</div>
+      </div>
+      <div class="projection-right">
+        <div class="projection-rate-label">Global AI water draw</div>
+        <div class="projection-rate-val" id="projectionRateVal">~41.7 <span>gal/sec</span></div>
+        <div class="projection-rate-sub">at 5 trillion liter/year midpoint estimate</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- By the Numbers fact cards -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">By the Numbers</span>
+    </div>
+    <div class="facts-grid">
+
+      <div class="fact-card">
+        <div class="fact-icon">💬</div>
+        <div class="fact-value">~0.13 gal</div>
+        <div class="fact-desc">water consumed by a single ChatGPT session of 10–50 prompts (cooling + electricity)</div>
+      </div>
+
+      <div class="fact-card">
+        <div class="fact-icon">🧠</div>
+        <div class="fact-value">185,000 gal</div>
+        <div class="fact-desc">freshwater used to train GPT-3 over two weeks — enough to fill a small house pool</div>
+      </div>
+
+      <div class="fact-card">
+        <div class="fact-icon">🏙️</div>
+        <div class="fact-value">980M gal</div>
+        <div class="fact-desc">used by Google's Council Bluffs, Iowa data center in 2023 alone — the highest in the U.S.</div>
+      </div>
+
+      <div class="fact-card">
+        <div class="fact-icon">📈</div>
+        <div class="fact-value">+34%</div>
+        <div class="fact-desc">increase in Microsoft's water usage from 2021→2022, driven primarily by generative AI workloads</div>
+      </div>
+
+      <div class="fact-card">
+        <div class="fact-icon">🌍</div>
+        <div class="fact-value">4.2–6.6T liters</div>
+        <div class="fact-desc">projected annual AI water withdrawal by 2027 — roughly half the UK's total annual water consumption</div>
+      </div>
+
+      <div class="fact-card">
+        <div class="fact-icon">🚰</div>
+        <div class="fact-value">80%</div>
+        <div class="fact-desc">of Google's data center water use is potable (drinking-quality) water, stressing local freshwater supplies</div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- Comparison Bars -->
+  <div class="section comparison-section">
+    <div class="section-header">
+      <span class="section-title">Relative Scale</span>
+    </div>
+    <div id="comparisonBars"></div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- Page Water Counter -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">This Page's Footprint</span>
+    </div>
+    <div class="page-counter-card">
+      <div class="page-counter-icon">💧</div>
+      <div class="page-counter-text">
+        <h3>Estimated water used to serve this page to you</h3>
+        <div class="val" id="pageCounter">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Unit Toggle -->
+  <div class="unit-toggle-bar">
+    <span class="unit-toggle-label">Units</span>
+    <div class="unit-toggle-options">
+      <span class="unit-opt active" id="optGallons">Gallons</span>
+      <label class="toggle-switch" title="Switch between gallons and liters">
+        <input type="checkbox" id="unitToggle" onchange="setUnit(this.checked)">
+        <div class="toggle-track"><div class="toggle-thumb"></div></div>
+      </label>
+      <span class="unit-opt" id="optLiters">Liters</span>
+    </div>
+  </div>
+
+  <!-- Disclaimer -->
+  <div class="disclaimer">
+    <div class="disclaimer-inner">
+      <strong>Disclaimer:</strong> All figures are <strong>estimates</strong> based on publicly reported corporate sustainability data and peer-reviewed research (Li et al. 2023, Google 2023 Environmental Report, Microsoft 2022–2023 reports, AP/Data Center Dynamics investigations). Company counters reflect <strong>total reported infrastructure water usage</strong> — not AI workloads exclusively. Google and Microsoft figures have been updated to reflect 2023 annual consumption data. The 2027 projection counter uses the midpoint of the 4.2–6.6 trillion liter/year range from Li et al. Live counters start from the site launch date of <strong>April 10, 2025</strong>. Actual usage may vary significantly.
+    </div>
+  </div>
+
+  <!-- Footer -->
   <footer>
-    <p>&copy; 2025 AIWaterUsage. Stay hydrated, stay informed.</p>
-    <p style="font-size: 0.9rem; max-width: 700px; margin: 1rem auto 0; line-height: 1.4;">
-      Disclaimer: The figures displayed on this site are <strong>estimates</strong> based on publicly reported or derived data. Actual water usage may vary. For cloud providers (Microsoft Azure, AWS, Google Cloud, etc.), these numbers reflect <strong>total reported water usage</strong> across their infrastructure—not just for AI workloads. The live counter starts from the site launch date of <strong>April 10, 2025.</strong>
-    </p>
+    <div class="footer-logo">AI<span>Water</span>Usage</div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="sources.html">Sources</a>
+      <a href="blog.html">Articles</a>
+      <a href="getInvolved.html">Get Involved</a>
+    </div>
+    <p>&copy; 2025 AIWaterUsage.com &mdash; Stay hydrated, stay informed.</p>
   </footer>
 
   <script>
+    // ─── CONFIG ───
     const launchDate = new Date("2025-04-10T00:00:00Z");
-
     const waterPerSecondGlobal = 0.000004;
-    const waterPerPageLoad = 0.00000004;
+    const waterPerPageLoad     = 0.00000004;
+    const PROJECTION_GAL_PER_SEC = 41.9;
+    const projectionLaunch = new Date("2026-01-01T00:00:00Z");
 
-    const rates = {
-      chatgpt: 185000 / 86400,
-      alphabet: 450000 / 86400,
-      microsoft: 1700000000 / (365 * 24 * 60 * 60),
-      oracle: 50000 / 86400,
-      aws: 324000 / 86400,
-      anthropic: 30000 / 86400
-    };
+    const GALLONS_PER_SHOWER  = 17;
+    const GALLONS_PER_LAUNDRY = 19;
+    const GALLONS_PER_POOL    = 660000;
+    const LITERS_PER_GALLON   = 3.78541;
 
-    function numberWithCommas(x) {
-      let parts = x.toString().split(".");
-      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      return parts.join(".");
+    let useLiters  = false;
+    let heroMode   = 0;
+    let heroAnimating = false;
+    const cardAnimating = new WeakMap();
+
+    // ─── HELPERS ───
+    function fmt(n, decimals = 0) {
+      if (typeof n !== "number") return String(n);
+      return n.toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+    }
+    function elapsed()    { return (Date.now() - launchDate.getTime()) / 1000; }
+    function gallonsNow() { return elapsed() * waterPerSecondGlobal; }
+    function evalRate(expr) { const [a,b] = expr.split("/").map(Number); return b ? a/b : a; }
+    function toDisplay(gallons, decimals = 2) {
+      return useLiters ? fmt(gallons * LITERS_PER_GALLON, decimals) : fmt(gallons, decimals);
+    }
+    function unitLabel() { return useLiters ? "liters" : "gallons"; }
+
+    // ─── MODES ───
+    const modes = [
+      {
+        key: "gallons",
+        label: "Water used to run this site since launch",
+        icon: "💧",
+        unit: "estimated gallons consumed by this website",
+        cardUnit: "gallons since April 10, 2025",
+        convert: g => g,
+      },
+      {
+        key: "showers",
+        label: "Equivalent 8-minute showers",
+        icon: "🚿",
+        unit: `1 shower = ${GALLONS_PER_SHOWER} gallons`,
+        cardUnit: "showers (8 min each)",
+        convert: g => g / GALLONS_PER_SHOWER,
+      },
+      {
+        key: "laundry",
+        label: "Equivalent laundry loads",
+        icon: "👕",
+        unit: `1 load = ${GALLONS_PER_LAUNDRY} gallons`,
+        cardUnit: "loads of laundry",
+        convert: g => g / GALLONS_PER_LAUNDRY,
+      },
+      {
+        key: "pools",
+        label: "Equivalent Olympic swimming pools",
+        icon: "🏊",
+        unit: `1 Olympic pool = ${fmt(GALLONS_PER_POOL)} gallons`,
+        cardUnit: "Olympic pools",
+        convert: g => g / GALLONS_PER_POOL,
+      },
+    ];
+
+    // ─── UNIT TOGGLE ───
+    function setUnit(isLiters) {
+      useLiters = isLiters;
+      document.getElementById("optGallons").classList.toggle("active", !isLiters);
+      document.getElementById("optLiters").classList.toggle("active",  isLiters);
+
+      // Hero sub label
+      const m = modes[heroMode];
+      document.getElementById("counterSub").textContent =
+        isLiters ? m.unit.replace("gallons", "liters") : m.unit;
+
+      // Provider card unit labels
+      document.querySelectorAll(".provider-card").forEach(card => {
+        const mode   = parseInt(card.dataset.mode || "0");
+        const unitEl = card.querySelector(".provider-unit");
+        unitEl.textContent = isLiters
+          ? modes[mode].cardUnit.replace("gallons", "liters")
+          : modes[mode].cardUnit;
+      });
+
+      // Page counter
+      document.getElementById("pageCounter").textContent =
+        toDisplay(waterPerPageLoad, 8) + " " + unitLabel();
+
+      // Projection unit text
+      const projUnit = document.getElementById("projectionUnit");
+      if (projUnit) projUnit.textContent = isLiters
+        ? "liters of water this year if 2027 demand arrives early"
+        : "gallons of water this year if 2027 demand arrives early";
+
+      // Projection rate
+      const projRate = document.getElementById("projectionRateVal");
+      if (projRate) projRate.innerHTML = isLiters
+        ? `~158,000 <span>L/sec</span>`
+        : `~41.7 <span>gal/sec</span>`;
+
+      updateHero();
+      updateCards();
+      updateProjection();
+      buildBars();
     }
 
-    function updateMainCounter() {
-      const now = new Date();
-      const elapsed = Math.floor((now - launchDate) / 1000);
-      const gallons = numberWithCommas((elapsed * waterPerSecondGlobal).toFixed(6));
-      document.getElementById("mainCounter").textContent = `${gallons} gallons`;
+    // ─── HERO COUNTER ───
+    function cycleMode() {
+      if (heroAnimating) return;
+      heroAnimating = true;
+      const valEl   = document.getElementById("mainCounter");
+      const labelEl = document.getElementById("counterLabel");
+      const subEl   = document.getElementById("counterSub");
+
+      valEl.classList.add("flip-out");
+      setTimeout(() => {
+        heroMode = (heroMode + 1) % modes.length;
+        const m = modes[heroMode];
+
+        document.querySelectorAll("#heroCounterWrap .mode-dot").forEach((d, i) =>
+          d.classList.toggle("active", i === heroMode));
+
+        labelEl.innerHTML = `<span class="live-dot"></span> ${m.icon} ${m.label}`;
+        subEl.textContent = useLiters ? m.unit.replace("gallons", "liters") : m.unit;
+
+        valEl.textContent = toDisplay(m.convert(gallonsNow()), 2);
+        valEl.classList.remove("flip-out");
+        valEl.classList.add("flip-in");
+        setTimeout(() => { valEl.classList.remove("flip-in"); heroAnimating = false; }, 220);
+      }, 180);
     }
 
-    function loadPageCounter() {
-      document.getElementById("pageCounter").textContent = `${waterPerPageLoad.toFixed(8)} gallons`;
+    function updateHero() {
+      if (heroAnimating) return;
+      const m = modes[heroMode];
+      document.getElementById("mainCounter").textContent =
+        toDisplay(m.convert(gallonsNow()), 2);
     }
 
-    function updateCompanyCounters() {
-      const now = new Date();
-      const elapsed = Math.floor((now - launchDate) / 1000);
+    // ─── PROVIDER CARDS ───
+    function cycleCard(card) {
+      if (cardAnimating.get(card)) return;
+      cardAnimating.set(card, true);
 
-      document.getElementById("chatgptCounter").textContent = `${numberWithCommas((elapsed * rates.chatgpt).toFixed(2))} gallons`;
-      document.getElementById("alphabetCounter").textContent = `${numberWithCommas((elapsed * rates.alphabet).toFixed(2))} gallons`;
-      document.getElementById("microsoftCounter").textContent = `${numberWithCommas((elapsed * rates.microsoft).toFixed(2))} gallons`;
-      document.getElementById("oracleCounter").textContent = `${numberWithCommas((elapsed * rates.oracle).toFixed(2))} gallons`;
-      document.getElementById("awsCounter").textContent = `${numberWithCommas((elapsed * rates.aws).toFixed(2))} gallons`;
-      document.getElementById("anthropicCounter").textContent = `${numberWithCommas((elapsed * rates.anthropic).toFixed(2))} gallons`;
+      const valEl  = card.querySelector(".provider-counter");
+      const unitEl = card.querySelector(".provider-unit");
+      const dots   = card.querySelectorAll(".provider-mode-dot");
+      let mode = parseInt(card.dataset.mode || "0");
+
+      valEl.classList.add("flip-out");
+      setTimeout(() => {
+        mode = (mode + 1) % modes.length;
+        card.dataset.mode = mode;
+        const m = modes[mode];
+
+        dots.forEach((d, i) => d.classList.toggle("active", i === mode));
+        unitEl.textContent = useLiters
+          ? m.cardUnit.replace("gallons", "liters")
+          : m.cardUnit;
+
+        const gallons = elapsed() * evalRate(valEl.dataset.rate);
+        valEl.textContent = toDisplay(m.convert(gallons), 0);
+        valEl.classList.remove("flip-out");
+        valEl.classList.add("flip-in");
+        setTimeout(() => { valEl.classList.remove("flip-in"); cardAnimating.set(card, false); }, 220);
+      }, 180);
     }
 
-    updateMainCounter();
-    loadPageCounter();
-    updateCompanyCounters();
-    setInterval(() => {
-      updateMainCounter();
-      updateCompanyCounters();
-    }, 1000);
+    function updateCards() {
+      document.querySelectorAll(".provider-card").forEach(card => {
+        if (cardAnimating.get(card)) return;
+        const valEl  = card.querySelector(".provider-counter");
+        const mode   = parseInt(card.dataset.mode || "0");
+        const gallons = elapsed() * evalRate(valEl.dataset.rate);
+        valEl.textContent = toDisplay(modes[mode].convert(gallons), 0);
+      });
+    }
+
+    // ─── COMPARISON BARS ───
+    const providers = [
+      { label: "OpenAI",    rate: 185000 / 86400 },
+      { label: "Alphabet",  rate: 6077888888 / 31536000 },
+      { label: "Microsoft", rate: 2060567296 / 31536000 },
+      { label: "Oracle",    rate: 50000 / 86400 },
+      { label: "AWS",       rate: 324000 / 86400 },
+      { label: "Anthropic", rate: 30000 / 86400 },
+    ];
+
+    function buildBars() {
+      const sec  = elapsed();
+      const vals = providers.map(p => ({ label: p.label, val: sec * p.rate }));
+      const max  = Math.max(...vals.map(v => v.val));
+      document.getElementById("comparisonBars").innerHTML = vals.map(v => `
+        <div class="comparison-row">
+          <div class="comparison-label">${v.label}</div>
+          <div class="comparison-bar-wrap">
+            <div class="comparison-bar-fill" style="width:${(v.val/max*100).toFixed(1)}%"></div>
+          </div>
+          <div class="comparison-val">${toDisplay(v.val, 0)} ${unitLabel()}</div>
+        </div>`).join("");
+    }
+
+    // ─── PROJECTION COUNTER ───
+    function updateProjection() {
+      const sec = (Date.now() - projectionLaunch.getTime()) / 1000;
+      const gal = Math.max(0, sec) * PROJECTION_GAL_PER_SEC;
+      const el  = document.getElementById("projectionCounter");
+      if (el) el.textContent = toDisplay(gal, 0);
+    }
+
+    // ─── PAGE COUNTER ───
+    document.getElementById("pageCounter").textContent =
+      toDisplay(waterPerPageLoad, 8) + " " + unitLabel();
+
+    // ─── INIT ───
+    updateHero();
+    updateCards();
+    buildBars();
+    updateProjection();
+
+    setInterval(() => { updateHero(); updateCards(); updateProjection(); }, 1000);
+    setInterval(buildBars, 30000);
   </script>
 </body>
 </html>
